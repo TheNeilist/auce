@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  app-server:
+    build:
+      context: auce-server
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db # This service depends on mysql. Start that first.
+    environment: # Pass environment variables to the service
+      DATASOURCE_URL: jdbc:mysql://db:3306/aucedb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      DATASOURCE_USERNAME: auceuser
+      DATASOURCE_PASSWORD: auceuserpw
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - backend
+      - frontend
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: aucedb
+      MYSQL_USER: auceuser
+      MYSQL_PASSWORD: auceuserpw
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+
+volumes:
+  db-data:
+
+networks:
+  backend:
+  frontend:
