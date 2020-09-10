@@ -1,0 +1,24 @@
+# Use for development to just run the db
+version: '3.7'
+services:
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: aucedb
+      MYSQL_USER: auceuser
+      MYSQL_PASSWORD: auceuserpw
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+
+volumes:
+  db-data:
+
+networks:
+  backend:
