@@ -20,9 +20,14 @@ public class CartController {
         return cartService.initCart();
     }
 
-    @PatchMapping("{cartId}/item/{itemId}")
+    @PatchMapping("/{cartId}/item/{itemId}")
     public Cart addItem(@PathVariable Long cartId, @PathVariable Long itemId) {
         return cartService.addItem(cartId, itemId);
+    }
+
+    @DeleteMapping("/{cartId}/item/{itemId}")
+    public Cart removeItem(@PathVariable Long cartId, @PathVariable Long itemId) {
+        return cartService.removeItem(cartId, itemId);
     }
 
     @GetMapping("{cartId}")

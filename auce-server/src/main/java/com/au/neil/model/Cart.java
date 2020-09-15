@@ -17,8 +17,8 @@ public class Cart {
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "cart_item",
-            joinColumns = { @JoinColumn(name = "item_id") },
-            inverseJoinColumns = { @JoinColumn(name = "cart_id") }
+            joinColumns = { @JoinColumn(name = "item_id", referencedColumnName="id") },
+            inverseJoinColumns = { @JoinColumn(name = "cart_id", referencedColumnName="id") }
     )
     private List<Item> items;
 
@@ -26,6 +26,9 @@ public class Cart {
         items.add(item);
     }
 
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
 
     public Long getId() {
         return id;

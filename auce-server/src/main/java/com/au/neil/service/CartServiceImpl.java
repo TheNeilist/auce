@@ -27,7 +27,16 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findById(cartId).get();
         Item item = itemRepository.findById(itemId).get();
         cart.addItem(item);
-        return cartRepository.save(cart);
+        cartRepository.saveAndFlush(cart);
+        return cart;
+    }
+
+    public Cart removeItem(Long cartId, Long itemId) {
+        Cart cart = cartRepository.findById(cartId).get();
+        Item item = itemRepository.findById(itemId).get();
+        cart.removeItem(item);
+        cartRepository.saveAndFlush(cart);
+        return cart;
     }
 
     public Cart getCartById(Long cartId) {

@@ -52,8 +52,30 @@ class App extends React.Component {
     }
 
     addToCart(itemId) {
-        fetch("http://localhost:8080/api/cart"+this.state.cart.id+"item/"+itemId, {
-          "method": "POST",
+            fetch("http://localhost:8080/api/cart/"+this.state.cart.id+"/item/"+itemId, {
+              "method": "PATCH",
+              "headers": {
+                "content-type": "application/json",
+                "accept": "application/json"
+                 }
+              }
+            )
+            .then(response => response.json())
+            .then(response => {
+              console.log(response);
+              this.setState({
+                cart: response
+              })
+
+            })
+            .catch(err => {
+              console.log(err);
+            });
+    }
+
+    removeFromCart(itemId) {
+        fetch("http://localhost:8080/api/cart/"+this.state.cart.id+"/item/"+itemId, {
+          "method": "DELETE",
           "headers": {
             "content-type": "application/json",
             "accept": "application/json"
@@ -62,7 +84,11 @@ class App extends React.Component {
         )
         .then(response => response.json())
         .then(response => {
-          console.log(response)
+          console.log(response);
+          this.setState({
+            cart: response
+          })
+
         })
         .catch(err => {
           console.log(err);
@@ -75,10 +101,14 @@ class App extends React.Component {
             <div>Items you can add to your cart:</div>
             {this.state.items.map(item =>
                 <div>
-                    {item.name}
-                    <button className="btn btn-primary" type='button' onClick={(e) => this.addToCart(item.id)}>
-                        Add to Cart
-                    </button>
+                    <ul>
+                        <li>
+                            {item.name}
+                            <button className="btn btn-primary" type='button' onClick={(e) => this.addToCart(item.id)}>
+                                Add to Cart
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             )}
             <br/><br/>
@@ -86,7 +116,14 @@ class App extends React.Component {
 
             {this.state.cart.items.map(item =>
                 <div>
-                    {item.name}
+                    <ul>
+                        <li>
+                            {item.name}
+                            <button className="btn btn-primary" type='button' onClick={(e) => this.removeFromCart(item.id)}>
+                                Remove from Cart
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             )}
 
